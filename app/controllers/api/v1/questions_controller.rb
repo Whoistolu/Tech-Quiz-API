@@ -1,4 +1,6 @@
 class Api::V1::QuestionsController < ApplicationController
+    before_action :authenticate_user!
+
     def index
         @quiz = Quiz.find(params[:quiz_id])
         render json: @quiz.questions

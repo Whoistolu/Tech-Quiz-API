@@ -1,4 +1,6 @@
 class Api::V1::OptionsController < ApplicationController
+    before_action :authenticate_user!
+
     def index
         @question = Question.find(params[:question_id])
         render json: @question.options

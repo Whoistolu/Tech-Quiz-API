@@ -1,4 +1,6 @@
 class Api::V1::QuizzesController < ApplicationController
+   before_action :authenticate_user!
+
     def index
         @quizzes = Quiz.all
         render json: @quizzes
@@ -20,7 +22,7 @@ class Api::V1::QuizzesController < ApplicationController
 
 
     private
-    
+
     def quiz_params
         params.require(:quiz).permit(:title, :description)
     end

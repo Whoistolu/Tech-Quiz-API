@@ -1,4 +1,6 @@
 class Api::V1::SubmissionsController < ApplicationController
+    before_action :authenticate_user!
+
     def index
         @submissions = current_user.submissions
         render json: @submissions
