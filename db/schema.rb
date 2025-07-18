@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_092534) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_112911) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,54 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_092534) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_jwt_denylists_on_jti"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.string "content"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.bigint "quiz_id", null: false
+    t.string "content"
+    t.string "question_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "time_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "submissions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "quiz_id", null: false
+    t.integer "score"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_submissions_on_quiz_id"
+    t.index ["user_id"], name: "index_submissions_on_user_id"
+  end
+
+  create_table "user_answers", force: :cascade do |t|
+    t.bigint "submission_id", null: false
+    t.bigint "question_id", null: false
+    t.bigint "option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_user_answers_on_option_id"
+    t.index ["question_id"], name: "index_user_answers_on_question_id"
+    t.index ["submission_id"], name: "index_user_answers_on_submission_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -33,4 +81,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_092534) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "options", "questions"
+  add_foreign_key "questions", "quizzes"
+  add_foreign_key "submissions", "quizzes"
+  add_foreign_key "submissions", "users"
+  add_foreign_key "user_answers", "options"
+  add_foreign_key "user_answers", "questions"
+  add_foreign_key "user_answers", "submissions"
 end
