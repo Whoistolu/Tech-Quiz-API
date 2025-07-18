@@ -10,6 +10,6 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
 
   def destroy
     super
-    render json: { message: "Logged out successfully."}, status: :ok
+    render json: { message: "Logged out successfully." }, status: :ok
   end
 end

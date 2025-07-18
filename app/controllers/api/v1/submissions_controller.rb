@@ -22,7 +22,7 @@ class Api::V1::SubmissionsController < ApplicationController
         @submission.score = score
 
         if @submission.save
-            render json: { message: 'Quiz submitted successfully.', score: score }, status: :created
+            render json: { message: "Quiz submitted successfully.", score: score }, status: :created
         else
             render json: { errors: @submission.errors.full_messages }, status: :unprocessable_entity
         end
