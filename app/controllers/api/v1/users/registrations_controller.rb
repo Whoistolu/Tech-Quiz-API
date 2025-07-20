@@ -10,4 +10,10 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
       render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  private
+
+  def sign_up_params
+    params.require(:user).permit(:email, :password, :password_confirmation)
+  end
 end
