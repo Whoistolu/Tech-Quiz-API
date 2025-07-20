@@ -12,4 +12,10 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
     super
     render json: { message: "Logged out successfully." }, status: :ok
   end
+
+  private
+
+  def sign_in_params
+    params.require(:user).permit(:email, :password)
+  end
 end
